@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi SELF LOVE: Cegah PCOS</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        h1, h2 { color: #4CAF50; }
+        .menu { margin-bottom: 20px; }
+        button { 
+            padding: 10px; 
+            margin: 5px; 
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            transition: background-color 0.3s, transform 0.2s; 
+        }
+        button:hover { 
+            background-color: #45a049; 
+            transform: scale(1.05); 
+        }
+        .content { 
+            background-color: white; 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin-bottom: 20px; 
+            border: 1px solid #ddd; 
+            opacity: 0; 
+            animation: fadeIn 0.5s ease-in forwards; 
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        .quiz-feedback.correct { 
+            color: green; 
+            animation: pulse 0.5s; 
+        }
+        .quiz-feedback.incorrect { 
+            color: red; 
+            animation: pulse 0.5s; 
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .score-result { font-size: 18px; font-weight: bold; color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <h1>Aplikasi SELF LOVE: Cegah PCOS</h1>
+    <p>Selamat datang! Aplikasi ini membantu Anda mencegah PCOS melalui self-love. Pilih opsi di bawah:</p>
+    
+    <div class="menu">
+        <button onclick="showMenu()">Mulai Menu</button>
+    </div>
+    
+    <div id="appContent" class="content"></div>
+    
+    <script>
+        console.log('Script dimuat dengan sukses.');
+
+        const content = {
+            'S': {
+                'title': 'S - Sayangi Tubuhmu',
+                'description': 'Mulailah dengan mencintai dan menghargai tubuhmu apa adanya. PCOS bisa diatasi dengan sikap positif.',
+                'tips': [
+                    'Praktikkan afirmasi harian: "Tubuhku kuat dan layak dicintai."',
+                    'Hindari membandingkan diri dengan orang lain; fokus pada kemajuanmu.',
+                    'Catat 3 hal yang kamu syukuri tentang tubuhmu setiap hari.'
+                ],
+                'quiz': ['Apa manfaat utama sayangi tubuhmu? (a) Meningkatkan motivasi (b) Mengurangi stres (c) Semua benar', 'Jawaban: c']
+            },
+            'E': {
+                'title': 'E - Eat Clean dan Sehat',
+                'description': 'Pilih makanan bergizi untuk mengatur hormon dan berat badan, kunci pencegahan PCOS.',
+                'tips': [
+                    'Makan lebih banyak sayur, buah, protein tanpa lemak, dan biji-bijian utuh.',
+                    'Kurangi gula, makanan olahan, dan karbohidrat sederhana.',
+                    'Contoh menu: Sarapan oatmeal dengan buah, makan siang salad ayam grill.'
+                ],
+                'quiz': ['Makanan apa yang baik untuk PCOS? (a) Gorengan (b) Sayur hijau (c) Soda', 'Jawaban: b']
+            },
+            'L1': {
+                'title': 'L - Live Aktif',
+                'description': 'Gerakkan tubuh secara rutin untuk meningkatkan sensitivitas insulin dan mengurangi gejala PCOS.',
+                'tips': [
+                    'Lakukan olahraga 30 menit/hari: jalan kaki, yoga, atau berenang.',
+                    'Mulai pelan jika baru: 10 menit sehari, lalu tingkatkan.',
+                    'Gabungkan dengan hobi, seperti dansa atau bersepeda.'
+                ],
+                'quiz': ['Berapa menit olahraga ideal per hari? (a) 5 menit (b) 30 menit (c) 2 jam', 'Jawaban: b']
+            },
+            'F': {
+                'title': 'F - Focus on Health',
+                'description': 'Prioritaskan kesehatan secara keseluruhan dengan konsultasi medis dan monitoring rutin.',
+                'tips': [
+                    'Kunjungi dokter kandungan secara berkala untuk cek PCOS.',
+                    'Pantau siklus menstruasi dan gejala seperti jerawat atau rambut berlebih.',
+                    'Gunakan app tracker untuk berat badan dan hormon.'
+                ],
+                'quiz': ['Siapa yang harus dikonsultasikan untuk PCOS? (a) Dokter gigi (b) Dokter kandungan (c) Mekanik', 'Jawaban: b']
+            },
+            'L2': {
+                'title': 'L - Listen to Your Body',
+                'description': 'Perhatikan sinyal tubuhmu untuk menghindari kelelahan dan menyesuaikan rutinitas.',
+                'tips': [
+                    'Istirahat jika merasa lelah; jangan paksa olahraga berat.',
+                    'Catat gejala seperti kram atau mood swing untuk pola.',
+                    'Praktikkan mindfulness: Tarik napas dalam saat stres.'
+                ],
+                'quiz': ['Apa artinya listen to your body? (a) Abaikan rasa sakit (b) Perhatikan sinyal tubuh (c) Makan seenaknya', 'Jawaban: b']
+            },
+            'O': {
+                'title': 'O - Overcome Stres',
+                'description': 'Stres memperburuk PCOS; kelola dengan teknik relaksasi.',
+                'tips': [
+                    'Coba meditasi 10 menit/hari atau journaling.',
+                    'Hindari overwork; sisihkan waktu untuk hobi.',
+                    'Dukung diri dengan teman atau komunitas PCOS.'
+                ],
+                'quiz': ['Cara mengatasi stres? (a) Kerja lebih keras (b) Meditasi (c) Begadang', 'Jawaban: b']
+            },
+            'V': {
+                'title': 'V - Value Your Sleep',
+                'description': 'Tidur cukup (7-9 jam) untuk regulasi hormon dan pemulihan tubuh.',
+                'tips': [
+                    'Buat rutinitas tidur: Matikan gadget 1 jam sebelum tidur.',
+                    'Kamar gelap dan sejuk; hindari kafein sore hari.',
+                    'Jika sulit tidur, coba teh chamomile atau baca buku.'
+                ],
+                'quiz': ['Berapa jam tidur ideal? (a) 4 jam (b) 7-9 jam (c) 12 jam', 'Jawaban: b']
+            },
+            'E2': {
+                'title': 'E - Energize dengan Gaya Hidup Sehat',
+                'description': 'Bangun energi melalui kombinasi semua elemen SELF LOVE untuk pencegahan PCOS jangka panjang.',
+                'tips': [
+                    'Integrasikan semuanya: Makan sehat + olahraga + relaksasi.',
+                    'Minum air putih 8 gelas/hari dan tambah suplemen jika direkomendasikan dokter.',
+                    'Rayakan kemajuan kecil untuk motivasi.'
+                ],
+                'quiz': ['Gaya hidup sehat dimulai dari? (a) Semua elemen SELF LOVE (b) Hanya makan (c) Hanya tidur', 'Jawaban: a']
+            }
+        };
+
+        const motivations = [
+            "Ingat: Self-love adalah kunci kesehatan. Kamu bisa cegah PCOS!",
+            "Tubuhmu layak dicintai. Mulai hari ini dengan satu langkah kecil.",
+            "PCOS bukan akhir; dengan SELF LOVE, kamu lebih kuat.",
+            "Sayangi dirimu seperti sahabat terbaikmu."
+        ];
+
+        function showMenu() {
+            try {
+                console.log('Menampilkan menu...');
+                const appContent = document.getElementById('appContent');
+                appContent.innerHTML = `
+                    <h2>Pilih Opsi:</h2>
+                    <button onclick="exploreSection()">1. Jelajahi SELF LOVE (Tips & Quiz)</button><br>
+                    <button onclick="dailyTracker()">2. Tracker Harian (Catat Progress)</button><br>
+                    <button onclick="dailyMotivation()">3. Motivasi Harian</button><br>
+                    <button onclick="exitApp()">4. Keluar</button>
+                `;
+            } catch (error) {
+                console.error('Error di showMenu:', error);
+                alert('Error: Gagal memuat menu.');
+            }
+        }
+
+        function exploreSection() {
+            try {
+                console.log('Memasuki exploreSection...');
+                const appContent = document.getElementById('appContent');
+                appContent.innerHTML = '<h2>Jelajahi SELF LOVE</h2><p>Pilih huruf (misal S): <input type="text" id="sectionInput" placeholder="Masukkan huruf"><button onclick="displayContent()">Lanjut</button></p>';
+            } catch (error) {
+                console.error('Error di exploreSection:', error);
+                alert('Error: Gagal memuat bagian explore.');
+            }
+        }
+
+        function displayContent() {
+            try {
+                console.log('Memproses displayContent...');
+                const section = document.getElementById('sectionInput').value.toUpperCase();
+                if (content[section]) {
+                    const sec = content[section];
+                    const appContent = document.getElementById('appContent');
+                    appContent.innerHTML = `
+                        <h3>${sec.title}</h3>
+                        <p>${sec.description}</p>
+                        <h4>Tips:</h4>
+                        <ul>${sec.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
+                        <h4>Quiz Cepat:</h4>
+                        <p>${sec.quiz[0]}</p>
+                        <input type="text" id="quizAnswer" placeholder="Jawaban Anda (a/b/c)">
+                        <button onclick="checkQuiz('${section}')">Kirim Jawaban</button>
+                        <div id="quizFeedback"></div>
+                    `;
+                } else {
+                    document.getElementById('appContent').innerHTML = '<p>Opsi tidak valid!</p>';
+                }
+            } catch (error) {
+                console.error('Error di displayContent:', error);
+                alert('Error: Gagal menampilkan konten.');
+            }
+        }
+
+        function checkQuiz(section) {
+            try {
+                console.log('Memeriksa quiz...');
+                const userAnswer = document.getElementById('quizAnswer').value.toLowerCase().trim();
+                const fullCorrectAnswer = content[section].quiz[1];
+                const correctAnswer = fullCorrectAnswer.split(': ')[1].trim().toLowerCase();
+                const feedbackDiv = document.getElementById('quizFeedback');
+                if (userAnswer === correctAnswer) {
+                    feedbackDiv.innerHTML = '<p class="quiz-feedback correct">Benar! 🎉</p>';
+                } else {
+                    feedbackDiv.innerHTML = `<p class="quiz-feedback incorrect">Salah. Jawaban benar: ${correctAnswer}</p>`;
+                }
+            } catch (error) {
+                console.error('Error di checkQuiz:', error);
+                alert('Error: Gagal memeriksa jawaban.');
+            }
+        }
+
+        function dailyTracker() {
+            try {
+                console.log('Memasuki dailyTracker...');
+                const today = new Date();
+                const day = today.toLocaleDateString('id-ID', { weekday: 'long' });  // e.g., "Senin"
+                const date = today.toLocaleDateString('id-ID');  // e.g., "12 Agustus 2024"
+                const appContent = document.getElementById('appContent');
+                appContent.innerHTML = `
+                    <h2>Tracker Harian - ${day}, ${date}</h2>
+                    <p>Catat progress SELF LOVE hari ini (y/n untuk setiap elemen):</p>
+                    <form id="trackerForm">
+                        ${['S', 'E', 'L1', 'F', 'L2', 'O', 'V', 'E2'].map(sec => `
+                            <p>${content[sec].title}: <input type="text" id="track${sec}" placeholder="y/n"></p>
+                        `).join('')}
+                        <button type="button" onclick="calculateScore()">Submit Tracker</button>
+                    </form>
+                    <div id="scoreResult"></div>
+                `;
+            } catch (error) {
+                console.error('Error di dailyTracker:', error);
+                alert('Error: Gagal memuat tracker.');
+            }
+        }
+
+        function calculateScore() {
+            try {
+                console.log('Menghitung skor...');
+                const sections = ['S', 'E', 'L1', 'F', 'L2', 'O', 'V', 'E2'];
+                let completed = 0;
+                sections.forEach(sec => {
+                    const input = document.getElementById(`track${sec}`).value.toLowerCase().trim();
+                    if (input === 'y') {
+                        completed++;
+                    }
+                });
+                const totalSections = sections.length;  // 8
+                const percentage = ((completed / totalSections) * 100).toFixed(2);  // e.g., 50.00
+                const scoreResult = document.getElementById('scoreResult');
+                scoreResult.innerHTML = `<p class="score-result">Skor SELF LOVE Anda: ${percentage}% - Anda telah menjalani ${completed} dari ${totalSections} elemen dengan baik!</p>`;
+            } catch (error) {
+                console.error('Error di calculateScore:', error);
+                alert('Error: Gagal menghitung skor.');
+            }
+        }
+
+        function dailyMotivation() {
+            try {
+                console.log('Menampilkan motivasi...');
+                const randomMotiv = motivations[Math.floor(Math.random() * motivations.length)];
+                document.getElementById('appContent').innerHTML = `<h2>Motivasi Harian</h2><p>${randomMotiv}</p>`;
+            } catch (error) {
+                console.error('Error di dailyMotivation:', error);
+                alert('Error: Gagal memuat motivasi.');
+            }
+        }
+
+        function exitApp() {
+            try {
+                console.log('Keluar aplikasi...');
+                document.getElementById('appContent').innerHTML = '<h2>Terima kasih! Tetap self-love dan konsultasikan dengan dokter.</h2>';
+            } catch (error) {
+                console.error('Error di exitApp:', error);
+                alert('Error: Gagal keluar.');
+            }
+        }
+    </script>
+</body>
+</html>
